@@ -1,0 +1,5 @@
+environment:
+  dev:
+    timeout: 10
+  prod:
+    timeout: 30

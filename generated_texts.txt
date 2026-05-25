@@ -1,0 +1,16 @@
+--- Project Overview of API-Automation-Testing ---
+
+This is an automated API testing framework built with pytest for testing endpoints like users, posts, and todos. Key features include:
+1. Structured payloads for API requests (e.g., todos_payload.py)
+2. Test reporting via Allure (HTML/XML reports in reports/allure-results)
+3. Utility modules for logging, assertions, and helpers
+4. pytest configuration (config/pytest.ini) and virtual environment (venv)
+5. Main test runner (run_tests.py)
+
+Key directories:
+- data/payloads: API request/response samples
+- src/utils: Reusable functions for validation and logging
+- tests/: pytest tests and configuration
+- reports/: Allure-generated test analytics
+
+The framework emphasizes end-to-end API validation, performance testing, and detailed reporting.

@@ -1,0 +1,114 @@
+"""
+Users Test Suite
+This file contains Exhaustive Tests (Positive, Negative, Edge, Boundary) for the Users endpoints.
+It uses the `pytest` framework and `allure` for generating beautiful HTML reports.
+"""
+import allure
+import pytest
+from src.utils.assertions import assert_status_code
+from data.payloads.users_payload import get_new_user_payload, get_update_user_payload
+
+@allure.feature("Users API - Exhaustive Testing")
+class TestUsersExhaustive:
+
+    # ==========================================
+    # POSITIVE TESTS (The "Happy Path")
+    # ==========================================
+    @allure.story("Positive: Get all users")
+    def test_get_users_positive(self, users_service):
+        """Verify that fetching all users returns a 200 OK status code."""
+        # Act: Call the API
+        response = users_service.get_users()
+        # Assert: Check the status code
+        assert_status_code(response, 200)
+
+    @allure.story("Positive: Get user by valid ID")
+    def test_get_user_by_id_positive(self, users_service):
+        """Verify that fetching a specific user by ID works successfully."""
+        response = users_service.get_user_by_id(1)
+        assert_status_code(response, 200)
+
+    @allure.story("Positive: Create a new user")
+    def test_create_user_positive(self, users_service):
+        """Verify that we can successfully create a new user."""
+        # Arrange: Generate a valid mock payload
+        payload = get_new_user_payload()
+        # Act: Send the POST request
+        response = users_service.create_user(payload)
+        # Assert: Expect a 201 Created status
+        assert_status_code(response, 201)
+
+    @allure.story("Positive: Update an existing user")
+    def test_update_user_positive(self, users_service):
+        """Verify that we can successfully update an existing user."""
+        payload = get_update_user_payload()
+        response = users_service.update_user(1, payload)
+        assert_status_code(response, 200)
+
+    @allure.story("Positive: Delete an existing user")
+    def test_delete_user_positive(self, users_service):
+        """Verify that we can successfully delete a user."""
+        response = users_service.delete_user(1)
+        assert_status_code(response, 200)
+
+    # ==========================================
+    # NEGATIVE TESTS (Testing invalid data)
+    # ==========================================
+    @allure.story("Negative: Get user by non-existent ID")
+    def test_get_user_not_found(self, users_service):
+        """Verify that requesting an ID that does not exist returns a 404 Not Found error."""
+        response = users_service.get_user_by_id(999999)
+        assert_status_code(response, 404)
+
+    @allure.story("Negative: Create user with invalid data types")
+    @pytest.mark.xfail(reason="JSONPlaceholder mock API doesn't enforce strict validations")
+    def test_create_user_invalid_types(self, users_service):
+        """
+        Verify that the API rejects invalid data types (e.g., sending an integer instead of a string).
+        We use xfail here because our mock dummy API accepts bad data anyway.
+        """
+        payload = get_new_user_payload()
+        # Intentionally corrupt the payload data
+        payload["userId" if "userId" in payload else "title"] = 123456
+        response = users_service.create_user(payload)
+        # Expect a 400 Bad Request
+        assert_status_code(response, 400)
+
+    # ==========================================
+    # EDGE & BOUNDARY TESTS (Testing limits)
+    # ==========================================
+    @allure.story("Edge: Create user with empty payload")
+    @pytest.mark.xfail(reason="JSONPlaceholder mock API doesn't enforce strict validations")
+    def test_create_user_empty_payload(self, users_service):
+        """
+        Verify the API behaves gracefully when given absolutely no data.
+        It should safely reject the request with a 400 Bad Request instead of crashing (500 Error).
+        """
+        response = users_service.create_user({})
+        assert_status_code(response, 400)
+
+    @allure.story("Boundary: user ID at lower bound")
+    def test_get_user_id_zero(self, users_service):
+        """
+        Verify that ID `0` (the lower boundary before valid IDs start) is correctly rejected as Not Found.
+        """
+        response = users_service.get_user_by_id(0)
+        assert_status_code(response, 404)
+
+    # ==========================================
+    # NESTED RELATIONAL ENDPOINTS
+    # ==========================================
+    @allure.story("Nested: Get user's albums")
+    def test_get_user_albums(self, users_service):
+        response = users_service.get_user_albums(1)
+        assert_status_code(response, 200)
+
+    @allure.story("Nested: Get user's todos")
+    def test_get_user_todos(self, users_service):
+        response = users_service.get_user_todos(1)
+        assert_status_code(response, 200)
+
+    @allure.story("Nested: Get user's posts")
+    def test_get_user_posts(self, users_service):
+        response = users_service.get_user_posts(1)
+        assert_status_code(response, 200)

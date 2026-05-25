@@ -1,0 +1,19 @@
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+
+# Virtual environments
+venv/
+env/
+
+# Reports
+reports/
+allure-results/
+allure-report/
+
+# Python cache
+__pycache__/
+*.pyc
