@@ -1,13 +1,13 @@
 # API Automation Testing Framework
 
-This framework is built using Python, `pytest`, `requests`, `locust`, and `allure` for robust API testing and reporting.
+This framework is built using Python, `pytest`, `requests`, `locust`, and `pytest-html` for robust API testing and reporting.
 
 ## Features
 - **Exhaustive Functional Testing:** Positive, Negative, Edge, and Boundary testing.
 - **Performance & Load Testing:** Integrated `locust` for simulating thousands of concurrent users.
 - **Data-Driven:** Centralized JSON payload factories for POST, PUT, and DELETE operations.
 - **Schema Validations:** Validates API responses against expected JSON schemas.
-- **Rich Reporting:** Integrates with Allure to generate beautiful HTML reports.
+- **Rich Reporting:** Integrates with `pytest-html` to generate single-page HTML reports.
 
 ## Folder Structure
 
@@ -19,7 +19,7 @@ api-testing-framework/
 │   └── schemas/         # JSON schemas for response validation
 ├── logs/                # Application and execution logs
 ├── performance/         # Locust performance and load testing scripts
-├── reports/             # Generated test reports (Allure results/HTML)
+├── reports/             # Generated HTML test reports
 ├── src/                 # Core framework logic
 │   ├── api/             # API Client wrapper and endpoint routes
 │   ├── services/        # Service layer for different API resources
@@ -59,19 +59,17 @@ python performance/load_test.py
 locust -f performance/locustfile.py --host=https://jsonplaceholder.typicode.com
 ```
 
-### 3. Generate and Serve Allure Reports
-First, run your tests to generate the raw result files in `reports/allure-results`.
+### 3. Generate HTML Reports
+Use `pytest-html` to run your tests and output a single, readable HTML report. The `--self-contained-html` flag ensures all CSS/assets are bundled into one file:
 ```bash
-pytest tests/
+pytest tests/ --html=reports/report.html --self-contained-html
 ```
-To view the report dynamically in your browser:
+You can then open `reports/report.html` directly in any web browser!
+
+### 4.Generate reports using allure
+Using ' Pytest + Allure Reporting'
+
 ```bash
+pytest tests/ --alluredir=reports/allure-results
 allure serve reports/allure-results
 ```
-
-### 4. Generate Static HTML Reports
-If you want to generate a static HTML folder (e.g. to host on GitHub Pages or a CI/CD server):
-```bash
-allure generate reports/allure-results -o reports/allure-report --clean
-```
-You can then open `reports/allure-report/index.html` in any browser.
