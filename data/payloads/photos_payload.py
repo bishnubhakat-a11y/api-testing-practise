@@ -1,9 +1,11 @@
+from src.utils.helpers import generate_random_string
+
 def get_new_photo_payload():
     return {
         "albumId": 1,
-        "title": "accusamus beatae ad facilis cum similique qui sunt",
-        "url": "https://via.placeholder.com/600/92c952",
-        "thumbnailUrl": "https://via.placeholder.com/150/92c952"
+        "title": f"Photo Title {generate_random_string(10)}",
+        "url": f"https://via.placeholder.com/600/{generate_random_string(6)}",
+        "thumbnailUrl": f"https://via.placeholder.com/150/{generate_random_string(6)}"
     }
 
 
@@ -11,9 +13,9 @@ def get_update_photo_payload():
     return {
         "id": 1,
         "albumId": 1,
-        "title": "updated photo title",
-        "url": "https://via.placeholder.com/600/000000",
-        "thumbnailUrl": "https://via.placeholder.com/150/000000"
+        "title": f"Updated Photo Title {generate_random_string(10)}",
+        "url": f"https://via.placeholder.com/600/{generate_random_string(6)}",
+        "thumbnailUrl": f"https://via.placeholder.com/150/{generate_random_string(6)}"
     }
 
 def get_delete_photo_payload():

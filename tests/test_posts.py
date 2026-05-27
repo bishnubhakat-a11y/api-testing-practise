@@ -5,30 +5,37 @@ It uses the `pytest` framework and `allure` for generating beautiful HTML report
 """
 import allure
 import pytest
-from src.utils.assertions import assert_status_code
+from src.utils.assertions import assert_status_code, assert_response_time, assert_not_empty, assert_key_exists
 from data.payloads.posts_payload import get_new_post_payload, get_update_post_payload
 
 @allure.feature("Posts API - Exhaustive Testing")
+@pytest.mark.regression
 class TestPostsExhaustive:
 
     # ==========================================
     # POSITIVE TESTS (The "Happy Path")
     # ==========================================
     @allure.story("Positive: Get all posts")
+    @pytest.mark.smoke
     def test_get_posts_positive(self, posts_service):
         """Verify that fetching all posts returns a 200 OK status code."""
         # Act: Call the API
         response = posts_service.get_posts()
         # Assert: Check the status code
         assert_status_code(response, 200)
+        assert_response_time(response, 1500)
+        assert_not_empty(response.json())
 
     @allure.story("Positive: Get post by valid ID")
     def test_get_post_by_id_positive(self, posts_service):
         """Verify that fetching a specific post by ID works successfully."""
         response = posts_service.get_post_by_id(1)
         assert_status_code(response, 200)
+        assert_response_time(response, 1500)
+        assert_key_exists(response.json(), 'id')
 
     @allure.story("Positive: Create a new post")
+    @pytest.mark.smoke
     def test_create_post_positive(self, posts_service):
         """Verify that we can successfully create a new post."""
         # Arrange: Generate a valid mock payload
@@ -37,6 +44,8 @@ class TestPostsExhaustive:
         response = posts_service.create_post(payload)
         # Assert: Expect a 201 Created status
         assert_status_code(response, 201)
+        assert_response_time(response, 1500)
+        assert_key_exists(response.json(), 'id')
 
     @allure.story("Positive: Update an existing post")
     def test_update_post_positive(self, posts_service):

@@ -5,30 +5,37 @@ It uses the `pytest` framework and `allure` for generating beautiful HTML report
 """
 import allure
 import pytest
-from src.utils.assertions import assert_status_code
+from src.utils.assertions import assert_status_code, assert_response_time, assert_not_empty, assert_key_exists
 from data.payloads.photos_payload import get_new_photo_payload, get_update_photo_payload
 
 @allure.feature("Photos API - Exhaustive Testing")
+@pytest.mark.regression
 class TestPhotosExhaustive:
 
     # ==========================================
     # POSITIVE TESTS (The "Happy Path")
     # ==========================================
     @allure.story("Positive: Get all photos")
+    @pytest.mark.smoke
     def test_get_photos_positive(self, photos_service):
         """Verify that fetching all photos returns a 200 OK status code."""
         # Act: Call the API
         response = photos_service.get_photos()
         # Assert: Check the status code
         assert_status_code(response, 200)
+        assert_response_time(response, 1500)
+        assert_not_empty(response.json())
 
     @allure.story("Positive: Get photo by valid ID")
     def test_get_photo_by_id_positive(self, photos_service):
         """Verify that fetching a specific photo by ID works successfully."""
         response = photos_service.get_photo_by_id(1)
         assert_status_code(response, 200)
+        assert_response_time(response, 1500)
+        assert_key_exists(response.json(), 'id')
 
     @allure.story("Positive: Create a new photo")
+    @pytest.mark.smoke
     def test_create_photo_positive(self, photos_service):
         """Verify that we can successfully create a new photo."""
         # Arrange: Generate a valid mock payload
@@ -37,6 +44,8 @@ class TestPhotosExhaustive:
         response = photos_service.create_photo(payload)
         # Assert: Expect a 201 Created status
         assert_status_code(response, 201)
+        assert_response_time(response, 1500)
+        assert_key_exists(response.json(), 'id')
 
     @allure.story("Positive: Update an existing photo")
     def test_update_photo_positive(self, photos_service):

@@ -44,11 +44,21 @@ api-testing-framework/
 ## Execution Commands
 
 ### 1. Run Functional Tests
-Run all exhaustive API tests using `pytest`:
+You can run the full suite, or use markers to run specific types of tests:
+
+**Run entire test suite:**
 ```bash
-python run_tests.py
-# OR
 pytest tests/
+```
+
+**Run critical Smoke Tests (Fast Sanity Check):**
+```bash
+pytest -m smoke
+```
+
+**Run full Regression Suite:**
+```bash
+pytest -m regression
 ```
 
 ### 2. Run Performance/Load Tests
@@ -67,8 +77,7 @@ pytest tests/ --html=reports/report.html --self-contained-html
 You can then open `reports/report.html` directly in any web browser!
 
 ### 4.Generate reports using allure
-Using ' Pytest + Allure Reporting'
-
+Using 'allure + pytest' to generate reports
 ```bash
 pytest tests/ --alluredir=reports/allure-results
 allure serve reports/allure-results

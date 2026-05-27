@@ -4,6 +4,8 @@ This module handles all the underlying HTTP communication using the `requests` l
 It is designed to be reusable so that we don't have to write `requests.get()` everywhere.
 """
 import requests
+import allure
+import json
 from config.config import config
 from src.utils.logger import logger
 
@@ -33,6 +35,33 @@ class APIClient:
         response = self.session.request(method, url, **kwargs)
         
         logger.info(f"Received response {response.status_code} from {url}")
+
+        # --- Allure Attachments ("API Screenshots") ---
+        try:
+            req_body = json.dumps(kwargs.get("json", {}), indent=4)
+            allure.attach(
+                body=f"URL: {url}\nMethod: {method}\nPayload:\n{req_body}",
+                name=f"HTTP Request ({method})",
+                attachment_type=allure.attachment_type.TEXT
+            )
+        except Exception:
+            pass
+
+        try:
+            res_body = json.dumps(response.json(), indent=4)
+            allure.attach(
+                body=f"Status Code: {response.status_code}\nResponse Body:\n{res_body}",
+                name="HTTP Response",
+                attachment_type=allure.attachment_type.JSON
+            )
+        except Exception:
+            # Fallback if response isn't JSON
+            allure.attach(
+                body=f"Status Code: {response.status_code}\nResponse Text:\n{response.text}",
+                name="HTTP Response",
+                attachment_type=allure.attachment_type.TEXT
+            )
+
         return response
 
     # ---------------------------------------------------------

@@ -5,30 +5,37 @@ It uses the `pytest` framework and `allure` for generating beautiful HTML report
 """
 import allure
 import pytest
-from src.utils.assertions import assert_status_code
+from src.utils.assertions import assert_status_code, assert_response_time, assert_not_empty, assert_key_exists
 from data.payloads.users_payload import get_new_user_payload, get_update_user_payload
 
 @allure.feature("Users API - Exhaustive Testing")
+@pytest.mark.regression
 class TestUsersExhaustive:
 
     # ==========================================
     # POSITIVE TESTS (The "Happy Path")
     # ==========================================
     @allure.story("Positive: Get all users")
+    @pytest.mark.smoke
     def test_get_users_positive(self, users_service):
         """Verify that fetching all users returns a 200 OK status code."""
         # Act: Call the API
         response = users_service.get_users()
         # Assert: Check the status code
         assert_status_code(response, 200)
+        assert_response_time(response, 1500)
+        assert_not_empty(response.json())
 
     @allure.story("Positive: Get user by valid ID")
     def test_get_user_by_id_positive(self, users_service):
         """Verify that fetching a specific user by ID works successfully."""
         response = users_service.get_user_by_id(1)
         assert_status_code(response, 200)
+        assert_response_time(response, 1500)
+        assert_key_exists(response.json(), 'id')
 
     @allure.story("Positive: Create a new user")
+    @pytest.mark.smoke
     def test_create_user_positive(self, users_service):
         """Verify that we can successfully create a new user."""
         # Arrange: Generate a valid mock payload
@@ -37,6 +44,8 @@ class TestUsersExhaustive:
         response = users_service.create_user(payload)
         # Assert: Expect a 201 Created status
         assert_status_code(response, 201)
+        assert_response_time(response, 1500)
+        assert_key_exists(response.json(), 'id')
 
     @allure.story("Positive: Update an existing user")
     def test_update_user_positive(self, users_service):

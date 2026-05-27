@@ -1,9 +1,11 @@
+from src.utils.helpers import generate_random_email, generate_random_string
+
 def get_new_comment_payload():
     return {
         "postId": 1,
-        "name": "id labore ex et quam laborum",
-        "email": "Eliseo@gardner.biz",
-        "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+        "name": f"Comment Title {generate_random_string(5)}",
+        "email": generate_random_email(),
+        "body": f"This is a randomly generated comment body: {generate_random_string(20)}"
     }
 
 
@@ -11,9 +13,9 @@ def get_update_comment_payload():
     return {
         "id": 1,
         "postId": 1,
-        "name": "updated name",
-        "email": "updated@gardner.biz",
-        "body": "updated body text"
+        "name": f"Updated Title {generate_random_string(5)}",
+        "email": generate_random_email(),
+        "body": f"This is a randomly updated comment body: {generate_random_string(20)}"
     }
 
 def get_delete_comment_payload():
