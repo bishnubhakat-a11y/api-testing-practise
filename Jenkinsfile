@@ -12,16 +12,16 @@ pipeline {
         choice(
             // Set the name of the parameter variable
             name: 'TEST_SUITE', 
-            // Define the options available in the dropdown
-            choices: ['smoke', 'regression', 'all'], 
+            // Define the options available in the dropdown. The first option is the DEFAULT for automated builds.
+            choices: ['all', 'smoke', 'regression'], 
             // Describe what this parameter does for the user triggering the build
             description: 'Choose which test suite to execute: Smoke (Fast), Regression (Full), or All.'
         )
         choice(
             // Set the name of the parameter variable
             name: 'REPORT_SELECTION', 
-            // Define the options available in the dropdown
-            choices: ['html', 'allure', 'both'], 
+            // Define the options available in the dropdown. The first option is the DEFAULT for automated builds.
+            choices: ['both', 'html', 'allure'], 
             // Describe what this parameter does for the user triggering the build
             description: 'Choose which report to publish: html, allure, or both'
         )
