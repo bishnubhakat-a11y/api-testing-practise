@@ -64,7 +64,7 @@ pipeline {
         // 'always' block runs regardless of whether the pipeline succeeded or failed
         always {
             // Define the steps to execute after the build
-            steps {
+        
                 // Print a message indicating reports are being generated
                 echo 'Generating Test Reports...'
 
@@ -96,7 +96,7 @@ pipeline {
                     // Specify the path to the directory containing the raw JSON test results
                     results: [[path: 'reports/allure-results']]
                 )
-            }
+
         }
         
         // 'success' block runs only if all stages passed
