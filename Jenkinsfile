@@ -87,7 +87,7 @@ pipeline {
         always {
             // Define the steps to execute after the build
             // Print a message indicating reports are being generated
-            echo 'Generating Test Reports From Scripts...'
+            echo 'Generating HTML and Allure Test Reports From Scripts...'
 
             script {
                 if (params.REPORT_SELECTION == 'html' || params.REPORT_SELECTION == 'both') {
