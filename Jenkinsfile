@@ -27,6 +27,13 @@ pipeline {
         )
     }
 
+    // Define triggers for automatic build execution
+    triggers {
+        // Poll the Source Control Management (SCM) every minute for changes
+        // If changes are detected, Jenkins will automatically trigger a build
+        pollSCM('* * * * *')
+    }
+
     // Define the different stages of our CI/CD pipeline
     stages {
         
