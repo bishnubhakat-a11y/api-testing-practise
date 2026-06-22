@@ -82,3 +82,20 @@ Using 'allure + pytest' to generate reports
 pytest tests/ --alluredir=reports/allure-results
 allure serve reports/allure-results
 ```
+
+## Jenkins CI/CD Integration
+
+This project includes a declarative `Jenkinsfile` configured for automated testing. 
+
+### Prerequisites for Jenkins
+You must have the following plugins installed on your Jenkins server:
+1. **Allure Jenkins Plugin** (To generate the Allure Dashboard)
+2. **HTML Publisher Plugin** (To attach the `pytest-html` report)
+
+### How to setup the Pipeline:
+1. Open Jenkins and click **New Item**.
+2. Select **Pipeline** and give it a name (e.g., `API-Testing-Pipeline`).
+3. Under the **Pipeline** section, choose **Pipeline script from SCM**.
+4. Select **Git** and provide the URL to your repository.
+5. Save the configuration.
+6. Click **Build with Parameters** to run your pipeline. You will be prompted to select whether to run the `smoke` or `regression` suite!
