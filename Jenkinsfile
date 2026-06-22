@@ -2,6 +2,9 @@
 pipeline {
     // Specify that this pipeline can run on any available Jenkins agent/node
     agent any
+    tools {
+        allure 'Allure-CLI' 
+    }
 
     // Define parameters that the user will be prompted for when triggering a build
     parameters {
