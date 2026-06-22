@@ -57,7 +57,7 @@ pipeline {
         }
 
         // Define the second stage: running the API tests
-        stage('Execute API Tests') {
+        stage('Execute API Test Suite') {
             // Define the steps to execute in this stage
             steps {
                 script {
