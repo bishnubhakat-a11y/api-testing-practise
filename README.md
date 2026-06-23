@@ -8,7 +8,7 @@ This framework is built using Python, `pytest`, `requests`, `locust`, and `pytes
 - **Data-Driven:** Centralized JSON payload factories for POST, PUT, and DELETE operations.
 - **Schema Validations:** Validates API responses against expected JSON schemas.
 - **Rich Reporting:** Integrates with `pytest-html` to generate single-page HTML reports.
-
+xyz
 ## Folder Structure
 
 ```text
