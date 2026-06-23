@@ -99,3 +99,4 @@ You must have the following plugins installed on your Jenkins server:
 4. Select **Git** and provide the URL to your repository.
 5. Save the configuration.
 6. Click **Build with Parameters** to run your pipeline. You will be prompted to select whether to run the `smoke` or `regression` suite!
+7. Running All the tests with both the repporting tool
